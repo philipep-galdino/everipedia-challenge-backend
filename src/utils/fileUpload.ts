@@ -1,12 +1,17 @@
-import { FileUpload } from 'graphql-upload'
 import { createWriteStream } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
 
-export const fileUpload = async (file: FileUpload) => {
+import { Upload } from 'src/types/Upload'
+
+export const fileUpload = async (file: Upload) => {
   const { createReadStream, filename } = file
+
+  console.log({ file })
 
   const fileId = await uuidv4()
   const fileName = `${fileId}-${filename}`
+
+  console.log(`Processing file ${fileName}`)
 
   const uploadFile: Promise<boolean> = new Promise(async (resolve, reject) =>
     createReadStream()

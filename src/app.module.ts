@@ -1,17 +1,22 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
-import { AppController } from './app.controller'
-import { AppService } from './app.service'
-import { FilesModule } from './files/files.module'
+import { graphqlUploadExpress } from 'graphql-upload'
+import { join } from 'path'
+
+import { FilesModule } from './Files/files.module'
 
 @Module({
   imports: [
     FilesModule,
     GraphQLModule.forRoot({
-      autoSchemaFile: 'schema.gql',
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }))
+      .forRoutes('graphql')
+  }
+}

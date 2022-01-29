@@ -3,5 +3,12 @@
 # ------------------------------------------------------
 
 type Query {
-  hello: String!
+  testHello: String!
 }
+
+type Mutation {
+  uploadFile(file: Upload!): String!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
