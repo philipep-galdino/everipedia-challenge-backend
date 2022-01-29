@@ -15,10 +15,11 @@ export const fileUpload = async (file: Upload) => {
 
   const uploadFile: Promise<boolean> = new Promise(async (resolve, reject) =>
     createReadStream()
-      .pipe(createWriteStream(`../../uploads/${fileName}`))
+      .pipe(createWriteStream(`src/uploads/${fileName}`))
       .on('finish', () => resolve(true))
-      .on('error', () => {
+      .on('error', (error) => {
         console.log(`There was an error uploading file ${filename}`)
+        console.log(error)
         reject(false)
       }),
   )
