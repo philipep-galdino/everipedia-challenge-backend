@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Args, Query } from '@nestjs/graphql'
 import { GraphQLUpload } from 'graphql-upload'
 
-import { Upload } from 'src/types/Upload'
+import { File } from 'src/types/File'
 
 import { FilesService } from './files.service'
 @Resolver()
@@ -9,10 +9,10 @@ export class FilesResolver {
   constructor(private FilesService: FilesService) {}
 
   @Mutation(() => String)
-  async pinFile(
-    @Args('file', { type: () => GraphQLUpload }) file: Upload,
+  async uploadAndPinFile(
+    @Args('file', { type: () => GraphQLUpload }) file: File,
   ): Promise<void | string> {
-    return this.FilesService.pinFile(file)
+    return this.FilesService.uploadAndPinFile(file)
   }
 
   @Query(() => String)

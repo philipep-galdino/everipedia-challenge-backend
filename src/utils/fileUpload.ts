@@ -1,25 +1,21 @@
 import { createWriteStream } from 'fs'
 import { v4 as uuidv4 } from 'uuid'
 
-import { Upload } from 'src/types/Upload'
+import { File } from 'src/types/File'
 
-export const fileUpload = async (file: Upload) => {
+export const fileUpload = async (file: File) => {
   const { createReadStream, filename } = file
 
   const fileId = await uuidv4()
   const fileName = `${fileId}-${filename}`
-
-  console.log(`Processing file ${fileName}`)
 
   const uploadFile: Promise<boolean> = new Promise(async (resolve, reject) =>
     createReadStream()
       .pipe(createWriteStream(`src/uploads/${fileName}`))
       .on('finish', () => {
         resolve(true)
-        console.log('Finished processing. File uploaded!')
       })
       .on('error', (error) => {
-        console.log(`There was an error uploading file ${filename}`)
         console.log(error)
         reject(false)
       }),
