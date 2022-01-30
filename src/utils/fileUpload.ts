@@ -6,8 +6,6 @@ import { Upload } from 'src/types/Upload'
 export const fileUpload = async (file: Upload) => {
   const { createReadStream, filename } = file
 
-  console.log({ file })
-
   const fileId = await uuidv4()
   const fileName = `${fileId}-${filename}`
 
@@ -16,7 +14,10 @@ export const fileUpload = async (file: Upload) => {
   const uploadFile: Promise<boolean> = new Promise(async (resolve, reject) =>
     createReadStream()
       .pipe(createWriteStream(`src/uploads/${fileName}`))
-      .on('finish', () => resolve(true))
+      .on('finish', () => {
+        resolve(true)
+        console.log('Finished processing. File uploaded!')
+      })
       .on('error', (error) => {
         console.log(`There was an error uploading file ${filename}`)
         console.log(error)

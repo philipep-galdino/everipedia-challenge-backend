@@ -1,5 +1,6 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { GraphQLModule } from '@nestjs/graphql'
+import { ConfigModule } from '@nestjs/config'
 import { graphqlUploadExpress } from 'graphql-upload'
 import { join } from 'path'
 
@@ -11,6 +12,7 @@ import { FilesModule } from './Files/files.module'
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
+    ConfigModule.forRoot(),
   ],
 })
 export class AppModule implements NestModule {
