@@ -1,14 +1,13 @@
-import { ReadStream } from 'fs'
 import pinataSDK from '@pinata/sdk'
 
-export const pinFile2Fps = async (fileToPin: ReadStream) => {
+export const pinFile2Fps = async (fileToPin: string) => {
   const pinata = pinataSDK(
     process.env.PINATA_API_KEY,
     process.env.PINATA_SECRET_API_KEY,
   )
 
   const pinnedFile = await pinata
-    .pinFileToIPFS(fileToPin)
+    .pinFromFS(fileToPin)
     .then((result) => {
       return result.IpfsHash
     })

@@ -1,17 +1,13 @@
 import { createWriteStream } from 'fs'
-import { v4 as uuidv4 } from 'uuid'
 
 import { File } from 'src/types/File'
 
 export const fileUpload = async (file: File) => {
   const { createReadStream, filename } = file
 
-  const fileId = await uuidv4()
-  const fileName = `${fileId}-${filename}`
-
   const uploadFile: Promise<boolean> = new Promise(async (resolve, reject) =>
     createReadStream()
-      .pipe(createWriteStream(`src/uploads/${fileName}`))
+      .pipe(createWriteStream(`src/uploads/${filename}`))
       .on('finish', () => {
         resolve(true)
       })
@@ -27,5 +23,5 @@ export const fileUpload = async (file: File) => {
     )
   }
 
-  return `/${fileName}`
+  return `src/uploads/${filename}`
 }
